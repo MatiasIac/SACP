@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SACP Message",
+  "type": "object",
+  "required": ["g", "plan"],
+  "properties": {
+    "msg_id": { "type": "string" },
+    "g": { "type": "string" },
+    "ctx": { "type": "object" },
+    "plan": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "array",
+            "items": [
+              { "type": "string" },
+              { "type": "string" },
+              { "type": "object" }
+            ],
+            "minItems": 3,
+            "maxItems": 3
+          },
+          {
+            "type": "object",
+            "properties": {
+              "parallel": { "type": "array" }
+            },
+            "required": ["parallel"]
+          },
+          {
+            "type": "array",
+            "items": [
+              { "type": "string" },
+              { "type": "string" },
+              { "type": "object" }
+            ],
+            "minItems": 3,
+            "maxItems": 3
+          }
+        ]
+      }
+    },
+    "out_fmt": {
+      "type": "string",
+      "enum": ["human", "raw", "summary"]
+    },
+    "state": {
+      "type": "string",
+      "enum": ["PENDING", "IN_PROGRESS", "DONE", "FAILED"]
+    },
+    "reply_to": { "type": "string" }
+  },
+  "additionalProperties": false
+}

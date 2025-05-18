@@ -1,0 +1,19 @@
+{
+  "msg_id": "hotel-search-001",
+  "g": "FIND_HOTEL",
+  "ctx": {
+    "loc": "Queenstown",
+    "in": "2024-07-20",
+    "out": "2024-07-25",
+    "bdg": 200,
+    "am": ["wifi", "breakfast"]
+  },
+  "plan": [
+    ["fetch", "HISTO_API", {"loc": "Queenstown", "dates": ["2024-07-20", "2024-07-25"]}],
+    ["predict", "PRC_EST", {"method": "linear", "window": 7}],
+    ["filter", "BUD_MATCH", {"max_price": 200, "amenities": ["breakfast"]}],
+    ["format", "PRESENT", {"top": 3}]
+  ],
+  "out_fmt": "human",
+  "state": "PENDING"
+}

@@ -1,0 +1,23 @@
+{
+  "msg_id": "spawn-0003",
+  "g": "SPAWN_AGENT",
+  "ctx": {
+    "missing_capability": "actor_search_by_nationality_and_profession",
+    "input_hints": ["country", "profession"],
+    "output_expectation": "list of actor profiles",
+    "source_prompt": "Search for Argentinian movie actors"
+  },
+  "plan": [
+    ["define", "ACTOR_LOOKUP", {
+      "description": "Finds individuals matching a profession in a given country using public actor databases.",
+      "inputs": ["country", "profession"],
+      "outputs": ["actor_profiles"]
+    }],
+    ["instantiate", "ACTOR_AGENT", {
+      "tool": "ACTOR_LOOKUP",
+      "verb": "search"
+    }]
+  ],
+  "out_fmt": "raw",
+  "state": "PENDING"
+}
