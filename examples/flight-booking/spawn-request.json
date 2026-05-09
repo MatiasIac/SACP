@@ -1,0 +1,41 @@
+{
+  "proto_ver": "1.0.0",
+  "msg_id": "spawn-flight-001",
+  "ts": "2026-05-09T00:00:05Z",
+  "sender": "ORCHESTRATOR_AGENT",
+  "recipient": "SPAWNER_SERVICE",
+  "g": "SPAWN_AGENT",
+  "ctx": {
+    "missing_capability": "AIRLINE_API_B",
+    "input_hints": ["origin", "destination", "date_window", "cabin", "passengers"],
+    "output_expectation": "normalized_itineraries"
+  },
+  "plan": [
+    {
+      "id": "s1",
+      "verb": "define",
+      "tool": "CAPABILITY_SPEC",
+      "params": {
+        "agent_name": "AIRLINE_AGENT_B",
+        "supported_verbs": ["search"],
+        "supported_tools": ["AIRLINE_API_B"]
+      }
+    },
+    {
+      "id": "s2",
+      "verb": "instantiate",
+      "tool": "AGENT_FACTORY",
+      "params": {"agent_name": "AIRLINE_AGENT_B"},
+      "depends_on": ["s1"]
+    },
+    {
+      "id": "s3",
+      "verb": "register",
+      "tool": "CAPABILITY_REGISTRY",
+      "params": {"agent_name": "AIRLINE_AGENT_B"},
+      "depends_on": ["s2"]
+    }
+  ],
+  "out_fmt": "raw",
+  "state": "PENDING"
+}

@@ -1,0 +1,105 @@
+{
+  "proto_ver": "1.0.0",
+  "msg_id": "flight-book-001",
+  "ts": "2026-05-09T00:00:00Z",
+  "sender": "INTERFACE_AGENT",
+  "recipient": "ORCHESTRATOR_AGENT",
+  "g": "BOOK_FLIGHT",
+  "ctx": {
+    "origin": "AKL",
+    "destination": "SFO",
+    "date_window": {"start": "2026-06-10", "end": "2026-06-25"},
+    "passengers": 1,
+    "cabin": "economy",
+    "max_budget_usd": 1400,
+    "calendar_id": "primary"
+  },
+  "plan": [
+    {
+      "id": "s1",
+      "verb": "collect",
+      "tool": "USER_INPUT",
+      "params": {}
+    },
+    {
+      "id": "s2",
+      "verb": "check",
+      "tool": "CALENDAR_AVAIL",
+      "params": {"timezone": "Pacific/Auckland"},
+      "depends_on": ["s1"],
+      "timeout_ms": 4000
+    },
+    {
+      "id": "s3",
+      "verb": "search",
+      "tool": "AIRLINE_API_A",
+      "params": {"origin": "AKL", "destination": "SFO"},
+      "depends_on": ["s1"],
+      "retry": {"max_attempts": 3, "backoff_ms": 200, "strategy": "exponential"},
+      "on_error": "continue"
+    },
+    {
+      "id": "s4",
+      "verb": "search",
+      "tool": "AIRLINE_API_B",
+      "params": {"origin": "AKL", "destination": "SFO"},
+      "depends_on": ["s1"],
+      "retry": {"max_attempts": 3, "backoff_ms": 200, "strategy": "exponential"},
+      "on_error": "fallback",
+      "fallback_step": "s10"
+    },
+    {
+      "id": "s5",
+      "verb": "search",
+      "tool": "AIRLINE_API_C",
+      "params": {"origin": "AKL", "destination": "SFO"},
+      "depends_on": ["s1"],
+      "on_error": "continue"
+    },
+    {
+      "id": "s6",
+      "verb": "merge",
+      "tool": "ITINERARY_MERGER",
+      "params": {},
+      "depends_on": ["s2", "s3", "s4", "s5"]
+    },
+    {
+      "id": "s7",
+      "verb": "analyze",
+      "tool": "FARE_SCORER",
+      "params": {"weights": {"price": 0.5, "duration": 0.2, "stops": 0.2, "flex": 0.1}},
+      "depends_on": ["s6"]
+    },
+    {
+      "id": "s8",
+      "verb": "rank",
+      "tool": "OPTION_RANKER",
+      "params": {"top_n": 5},
+      "depends_on": ["s7"]
+    },
+    {
+      "id": "s9",
+      "verb": "format",
+      "tool": "PRESENT",
+      "params": {"currency": "USD"},
+      "depends_on": ["s8"],
+      "output_key": "flight_options"
+    },
+    {
+      "id": "s10",
+      "verb": "spawn",
+      "tool": "AGENT_FACTORY",
+      "params": {
+        "missing_capability": "AIRLINE_API_B",
+        "agent_name": "AIRLINE_AGENT_B"
+      }
+    }
+  ],
+  "out_fmt": "human",
+  "state": "PENDING",
+  "trace": {
+    "trace_id": "trace-flight-001",
+    "span_id": "span-root-001",
+    "attempt": 1
+  }
+}

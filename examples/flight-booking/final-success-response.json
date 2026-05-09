@@ -1,0 +1,29 @@
+{
+  "proto_ver": "1.0.0",
+  "msg_id": "flight-book-001-r1",
+  "reply_to": "flight-book-001",
+  "ts": "2026-05-09T00:00:12Z",
+  "sender": "ORCHESTRATOR_AGENT",
+  "recipient": "INTERFACE_AGENT",
+  "g": "BOOK_FLIGHT",
+  "plan": [
+    {
+      "id": "s9",
+      "verb": "format",
+      "tool": "PRESENT",
+      "params": {"currency": "USD"}
+    }
+  ],
+  "out_fmt": "human",
+  "state": "DONE",
+  "result": {
+    "outputs": {
+      "flight_options": [
+        {"rank": 1, "price_usd": 1120, "stops": 1, "airline": "Airline A"},
+        {"rank": 2, "price_usd": 1195, "stops": 1, "airline": "Airline B"},
+        {"rank": 3, "price_usd": 1280, "stops": 2, "airline": "Airline C"}
+      ]
+    },
+    "summary": "Top 3 options satisfy budget and calendar constraints"
+  }
+}
