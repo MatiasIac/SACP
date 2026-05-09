@@ -1,0 +1,9 @@
+{
+  "proto_ver": "1.0.0",
+  "msg_id": "done-no-result",
+  "ts": "2026-05-09T00:00:00Z",
+  "sender": "TEST_AGENT",
+  "g": "DONE_TEST",
+  "plan": [{"id": "s1", "verb": "noop", "tool": "NOOP_TOOL", "params": {}}],
+  "state": "DONE"
+}

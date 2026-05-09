@@ -1,0 +1,11 @@
+{
+  "proto_ver": "1.0.0",
+  "msg_id": "unknown-dep-001",
+  "ts": "2026-05-09T00:00:00Z",
+  "sender": "TEST_AGENT",
+  "g": "DEP_TEST",
+  "plan": [
+    {"id": "s1", "verb": "a", "tool": "TOOL_A", "params": {}, "depends_on": ["s999"]}
+  ],
+  "state": "PENDING"
+}

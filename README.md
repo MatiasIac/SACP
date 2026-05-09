@@ -1,43 +1,71 @@
 # Semantic Agent Communication Protocol (SACP)
 
-SACP is a formal specification and practical messaging protocol for enabling modular, multi-agent systems powered by LLMs or other autonomous reasoning components. It defines a simple, strict, and extensible way for agents to:
+SACP is a transport-agnostic protocol for orchestrating modular multi-agent systems powered by LLMs or other autonomous components.
 
-* Interpret semantic goals
-* Share structured execution plans
-* Dynamically spawn new agents when capability gaps are found
-* Exchange compact, machine-readable messages with predictable semantics
-
-## Key Features
-
-* Structured `[verb, tool, params]` task planning format
-* Support for dynamic agent discovery and embedding-based capability matching
-* Built-in message lifecycle control, traceability, and error handling
-* Designed to reduce verbosity and maximize agent chaining
-* Model-agnostic (usable with GPT, Claude, Mistral, etc.)
-
-## Example Use Cases
-
-* Travel planning (e.g., hotel search, visa prediction)
-* Document summarization and analysis
-* Multi-step code generation workflows
-* AI-based research and knowledge retrieval agents
-
-## Repository Structure
-
-* `specification.md`: Full SACP protocol definition
-* `whitepaper.md`: Introductory overview and architectural rationale
-* `examples/`: Sample SACP messages and agent behaviors
-* `templates/`: LLM prompt templates for compliant agent creation
-* `schema/`: JSON schemas for validating message structure
-
-## License
-
-MIT License (see LICENSE file).
+It defines a strict, machine-first message contract for:
+- Goal expression
+- Structured execution planning
+- Lifecycle state tracking
+- Error and retry control
+- Capability-based delegation and agent spawning
 
 ## Status
 
-SACP is currently in draft version `v0.1`. Contributions, critiques, and integrations are welcome via GitHub Issues.
+SACP is now specified as **v1.0.0 (stable)** for production implementations.
 
----
+## Why SACP
 
-For more, see `specification.md` or the white paper.
+- Compact JSON envelope with predictable semantics
+- Strict schema validation and state transition discipline
+- Output format control (`raw`, `summary`, `human`)
+- Dependency-aware step execution (`depends_on`)
+- Extensibility without breaking the core protocol
+
+## Canonical Message Shape (v1.0.0)
+
+```json
+{
+  "proto_ver": "1.0.0",
+  "msg_id": "task-001",
+  "ts": "2026-05-09T00:00:00Z",
+  "sender": "INTERFACE_AGENT",
+  "recipient": "EXECUTOR_AGENT",
+  "g": "SUMMARIZE_FEEDBACK",
+  "ctx": {"lang": "en"},
+  "plan": [
+    {
+      "id": "s1",
+      "verb": "extract",
+      "tool": "FEEDBACK_DOC",
+      "params": {"range": "Q2"}
+    },
+    {
+      "id": "s2",
+      "verb": "analyze",
+      "tool": "SENTIMENT",
+      "params": {},
+      "depends_on": ["s1"]
+    }
+  ],
+  "out_fmt": "raw",
+  "state": "PENDING"
+}
+```
+
+## Repository Structure
+
+- `specification.md`: Normative SACP v1.0.0 specification
+- `schema/sacp.schema.json`: JSON Schema (draft 2020-12) for message validation
+- `examples/`: Valid example messages
+- `templates/`: Prompt template for creating SACP-compliant agents
+- `whitepaper.md`: Architecture rationale, design decisions, and adoption guidance
+
+## Compatibility Notes
+
+- v0.1 tuple step syntax (`[verb, tool, params]`) is deprecated.
+- v1.0.0 canonical `plan` steps are object-based.
+- Consumers may support a compatibility adapter, but producers should emit v1.0.0 messages.
+
+## License
+
+MIT License (see [LICENSE](LICENSE)).

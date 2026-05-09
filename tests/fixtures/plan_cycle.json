@@ -1,0 +1,12 @@
+{
+  "proto_ver": "1.0.0",
+  "msg_id": "cycle-001",
+  "ts": "2026-05-09T00:00:00Z",
+  "sender": "TEST_AGENT",
+  "g": "CYCLE_TEST",
+  "plan": [
+    {"id": "s1", "verb": "a", "tool": "TOOL_A", "params": {}, "depends_on": ["s2"]},
+    {"id": "s2", "verb": "b", "tool": "TOOL_B", "params": {}, "depends_on": ["s1"]}
+  ],
+  "state": "PENDING"
+}

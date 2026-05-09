@@ -1,0 +1,58 @@
+{
+  "proto_ver": "1.0.0",
+  "msg_id": "task-full-001",
+  "reply_to": "task-parent-001",
+  "ts": "2026-05-09T00:00:00Z",
+  "sender": "INTERFACE_AGENT",
+  "recipient": "EXECUTOR_AGENT",
+  "g": "FIND_HOTEL",
+  "ctx": {
+    "loc": "Queenstown",
+    "budget": 200,
+    "amenities": ["wifi", "breakfast"]
+  },
+  "plan": [
+    {
+      "id": "s1",
+      "verb": "fetch",
+      "tool": "HISTO_API",
+      "params": {"loc": "Queenstown"},
+      "timeout_ms": 8000,
+      "retry": {"max_attempts": 3, "backoff_ms": 200, "strategy": "exponential"}
+    },
+    {
+      "id": "s2",
+      "verb": "format",
+      "tool": "PRESENT",
+      "params": {"top": 3},
+      "depends_on": ["s1"],
+      "on_error": "continue",
+      "output_key": "hotel_options"
+    }
+  ],
+  "out_fmt": "summary",
+  "state": "DONE",
+  "result": {
+    "outputs": {
+      "hotel_options": []
+    },
+    "summary": "No hotels matched filters"
+  },
+  "trace": {
+    "trace_id": "trace-001",
+    "span_id": "span-001",
+    "attempt": 1,
+    "metrics": {
+      "latency_ms": 123,
+      "queue_ms": 5,
+      "tool_calls": 2,
+      "tokens_in": 200,
+      "tokens_out": 40,
+      "cost_usd": 0.0012
+    }
+  },
+  "test_mode": false,
+  "ext": {
+    "org.example.runbook": "rb-17"
+  }
+}

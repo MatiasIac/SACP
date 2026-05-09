@@ -1,0 +1,8 @@
+{
+  "proto_ver": "1.0.0",
+  "msg_id": "missing-plan",
+  "ts": "2026-05-09T00:00:00Z",
+  "sender": "TEST_AGENT",
+  "g": "PING",
+  "state": "PENDING"
+}

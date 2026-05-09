@@ -1,0 +1,11 @@
+{
+  "proto_ver": "1.0.0",
+  "msg_id": "timeout-001",
+  "ts": "2026-05-09T00:00:00Z",
+  "sender": "TEST_AGENT",
+  "g": "TIMEOUT_TEST",
+  "plan": [
+    {"id": "s1", "verb": "wait", "tool": "SLOW_TOOL", "params": {"sleep_ms": 10000}, "timeout_ms": 10}
+  ],
+  "state": "PENDING"
+}

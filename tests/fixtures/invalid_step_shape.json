@@ -1,0 +1,15 @@
+{
+  "proto_ver": "1.0.0",
+  "msg_id": "bad-step",
+  "ts": "2026-05-09T00:00:00Z",
+  "sender": "TEST_AGENT",
+  "g": "PING",
+  "plan": [
+    {
+      "id": "s1",
+      "verb": "noop",
+      "params": {}
+    }
+  ],
+  "state": "PENDING"
+}

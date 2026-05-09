@@ -1,18 +1,47 @@
 {
+  "proto_ver": "1.0.0",
   "msg_id": "hotel-search-001",
+  "ts": "2026-05-09T00:00:00Z",
+  "sender": "INTERFACE_AGENT",
+  "recipient": "EXECUTOR_AGENT",
   "g": "FIND_HOTEL",
   "ctx": {
     "loc": "Queenstown",
-    "in": "2024-07-20",
-    "out": "2024-07-25",
-    "bdg": 200,
-    "am": ["wifi", "breakfast"]
+    "check_in": "2026-07-20",
+    "check_out": "2026-07-25",
+    "budget": 200,
+    "amenities": ["wifi", "breakfast"]
   },
   "plan": [
-    ["fetch", "HISTO_API", {"loc": "Queenstown", "dates": ["2024-07-20", "2024-07-25"]}],
-    ["predict", "PRC_EST", {"method": "linear", "window": 7}],
-    ["filter", "BUD_MATCH", {"max_price": 200, "amenities": ["breakfast"]}],
-    ["format", "PRESENT", {"top": 3}]
+    {
+      "id": "s1",
+      "verb": "fetch",
+      "tool": "HISTO_API",
+      "params": {"loc": "Queenstown", "dates": ["2026-07-20", "2026-07-25"]},
+      "timeout_ms": 8000
+    },
+    {
+      "id": "s2",
+      "verb": "predict",
+      "tool": "PRC_EST",
+      "params": {"method": "linear", "window": 7},
+      "depends_on": ["s1"]
+    },
+    {
+      "id": "s3",
+      "verb": "filter",
+      "tool": "BUD_MATCH",
+      "params": {"max_price": 200, "amenities": ["breakfast"]},
+      "depends_on": ["s2"]
+    },
+    {
+      "id": "s4",
+      "verb": "format",
+      "tool": "PRESENT",
+      "params": {"top": 3},
+      "depends_on": ["s3"],
+      "output_key": "hotel_options"
+    }
   ],
   "out_fmt": "human",
   "state": "PENDING"

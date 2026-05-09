@@ -1,0 +1,10 @@
+{
+  "proto_ver": "1.0.0",
+  "msg_id": "unknown-field",
+  "ts": "2026-05-09T00:00:00Z",
+  "sender": "TEST_AGENT",
+  "g": "PING",
+  "plan": [{"id": "s1", "verb": "noop", "tool": "NOOP_TOOL", "params": {}}],
+  "state": "PENDING",
+  "unexpected_field": true
+}

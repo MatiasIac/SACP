@@ -1,0 +1,8 @@
+{
+  "proto_ver": "1.0.0",
+  "msg_id": "missing-ts",
+  "sender": "TEST_AGENT",
+  "g": "PING",
+  "plan": [{"id": "s1", "verb": "noop", "tool": "NOOP_TOOL", "params": {}}],
+  "state": "PENDING"
+}

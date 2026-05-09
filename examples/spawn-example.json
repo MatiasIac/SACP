@@ -1,22 +1,48 @@
 {
+  "proto_ver": "1.0.0",
   "msg_id": "spawn-0003",
+  "ts": "2026-05-09T00:00:00Z",
+  "sender": "ORCHESTRATOR_AGENT",
+  "recipient": "SPAWNER_SERVICE",
   "g": "SPAWN_AGENT",
   "ctx": {
     "missing_capability": "actor_search_by_nationality_and_profession",
     "input_hints": ["country", "profession"],
-    "output_expectation": "list of actor profiles",
+    "output_expectation": "list_of_actor_profiles",
     "source_prompt": "Search for Argentinian movie actors"
   },
   "plan": [
-    ["define", "ACTOR_LOOKUP", {
-      "description": "Finds individuals matching a profession in a given country using public actor databases.",
-      "inputs": ["country", "profession"],
-      "outputs": ["actor_profiles"]
-    }],
-    ["instantiate", "ACTOR_AGENT", {
+    {
+      "id": "s1",
+      "verb": "define",
       "tool": "ACTOR_LOOKUP",
-      "verb": "search"
-    }]
+      "params": {
+        "description": "Find individuals matching a profession in a given country using public actor databases.",
+        "inputs": ["country", "profession"],
+        "outputs": ["actor_profiles"]
+      }
+    },
+    {
+      "id": "s2",
+      "verb": "instantiate",
+      "tool": "ACTOR_AGENT",
+      "params": {
+        "tool": "ACTOR_LOOKUP",
+        "verb": "search"
+      },
+      "depends_on": ["s1"]
+    },
+    {
+      "id": "s3",
+      "verb": "register",
+      "tool": "CAPABILITY_REGISTRY",
+      "params": {
+        "agent_name": "ACTOR_AGENT",
+        "supported_verbs": ["search"],
+        "supported_tools": ["ACTOR_LOOKUP"]
+      },
+      "depends_on": ["s2"]
+    }
   ],
   "out_fmt": "raw",
   "state": "PENDING"
